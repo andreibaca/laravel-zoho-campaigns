@@ -88,12 +88,12 @@ class ZohoCampaignsApi
      * Marks a contact as do not mail.
      *
      * @param string $email The email address of the contact.
-     * @return array Response from the API.
+     * @return string Response message from the API.
      *
      * @throws ZohoApiException
      * @throws ConnectionException
      */
-    public function doNotMail(string $email): array
+    public function doNotMail(string $email): string
     {
         $params = [
             'resfmt' => 'JSON',
@@ -108,7 +108,7 @@ class ZohoCampaignsApi
             throw ZohoApiException::fromResponse($response);
         }
 
-        return $response;
+        return $response['message'] ?? '';
     }
 
 

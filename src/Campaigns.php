@@ -52,12 +52,17 @@ class Campaigns
      * @throws ConnectionException
      * @throws ZohoApiException
      */
-    public function unsubscribe(string $email, ?string $listName = null): string
+    public function unsubscribe(string $email, ?string $listName = null, bool $do_not_mail = false): string
     {
         $listKey = $this->resolveListKey($listName);
 
+        if ($do_not_mail) {
+            $this->zohoApi->listUnsubscribe($listKey, $email);
+            return $this->zohoApi->doNotMail($email);
+        }
         return $this->zohoApi->listUnsubscribe($listKey, $email);
     }
+
 
     /**
      * Retrieves subscribers for a given list name.
