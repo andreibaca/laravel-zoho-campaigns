@@ -83,6 +83,35 @@ class ZohoCampaignsApi
         return $response['message'] ?? '';
     }
 
+
+    /**
+     * Marks a contact as do not mail.
+     *
+     * @param string $email The email address of the contact.
+     * @return array Response from the API.
+     *
+     * @throws ZohoApiException
+     * @throws ConnectionException
+     */
+    public function doNotMail(string $email): array
+    {
+        $params = [
+            'resfmt' => 'JSON',
+            'contactinfo' => json_encode(['Contact Email' => $email]),
+        ];
+
+        $response = $this->newRequest()
+            ->post(sprintf('/json/contactdonotmail?%s', http_build_query($params)))
+            ->json();
+
+        if ($response['status'] === 'error') {
+            throw ZohoApiException::fromResponse($response);
+        }
+
+        return $response;
+    }
+
+
     /**
      * Retrieves the list of subscribers for a given list key with various options.
      *
